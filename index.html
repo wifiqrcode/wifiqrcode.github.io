@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WiFi QR Code Generator - goqrgen.com</title>
+  <meta name="description" content="Create secure WiFi QR codes instantly with SSID, password, encryption type, and hidden network support. Free and easy to use.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #00ffc8;
+    }
+    .tool-container {
+      background: #1e1e2f;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,255,200,0.2);
+      width: 100%;
+      max-width: 500px;
+    }
+    label {
+      margin-top: 1rem;
+      display: block;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #00ffc8;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    button:hover {
+      background: #00bfa6;
+    }
+    .qr-preview {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .info-section, .instructions-section {
+      margin-top: 2rem;
+      max-width: 600px;
+      text-align: center;
+      color: #ddd;
+      line-height: 1.6;
+    }
+    footer {
+      margin-top: auto;
+      padding: 1rem;
+      text-align: center;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>WiFi QR Code Generator</h1>
+  <div class="tool-container">
+    <label for="ssid">WiFi Name (SSID)</label>
+    <input type="text" id="ssid" placeholder="Enter WiFi Name" />
+
+    <label for="password">Password</label>
+    <input type="text" id="password" placeholder="Enter Password" />
+
+    <label for="encryption">Encryption Type</label>
+    <select id="encryption">
+      <option value="WPA">WPA/WPA2</option>
+      <option value="WEP">WEP</option>
+      <option value="nopass">None</option>
+    </select>
+
+    <label><input type="checkbox" id="hidden" /> Hidden Network</label>
+
+    <button onclick="generateQRCode()">Generate QR Code</button>
+
+    <div class="qr-preview">
+      <canvas id="qrcode"></canvas>
+      <br />
+      <button onclick="downloadQR()">Download QR</button>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <p>
+      The <a href="https://goqrgen.com/generator">WiFi QR Code Generator</a> is a free tool that helps you share your WiFi credentials quickly and securely. 
+      Just enter your network name, password, and encryption type, and this tool will generate a QR code that can be scanned to instantly connect to your WiFi network.
+      No more typing long passwords or manually configuring settings—just scan and connect.
+    </p>
+  </div>
+
+  <div class="instructions-section">
+    <h2 style="color:#00ffc8; margin-bottom: 10px;">How to Use</h2>
+    <ol style="text-align: left; margin: 0 auto; max-width: 500px;">
+      <li>Enter your WiFi network name (SSID) in the first field.</li>
+      <li>Enter the WiFi password in the second field.</li>
+      <li>Select your encryption type (WPA/WEP or None if it’s an open network).</li>
+      <li>If your network is hidden, check the “Hidden Network” option.</li>
+      <li>Click the <strong>“Generate QR Code”</strong> button to display your WiFi QR code.</li>
+      <li>To save the code, click <strong>“Download QR”</strong> and use it anywhere—print, share, or display!</li>
+      <li>Scan the QR code using any smartphone camera or QR scanner app to connect to WiFi instantly.</li>
+    </ol>
+  </div>
+
+  <footer>
+    &copy; 2025 goqrgen.com - Secure WiFi QR Generator
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+  <script>
+    function generateQRCode() {
+      const ssid = document.getElementById("ssid").value;
+      const password = document.getElementById("password").value;
+      const encryption = document.getElementById("encryption").value;
+      const hidden = document.getElementById("hidden").checked ? "true" : "false";
+
+      const wifiString = `WIFI:T:${encryption};S:${ssid};P:${password};H:${hidden};;`;
+
+      const qr = new QRious({
+        element: document.getElementById('qrcode'),
+        size: 250,
+        value: wifiString
+      });
+    }
+
+    function downloadQR() {
+      const canvas = document.getElementById("qrcode");
+      const link = document.createElement("a");
+      link.download = "wifi-qr.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }
+  </script>
+</body>
+</html>
